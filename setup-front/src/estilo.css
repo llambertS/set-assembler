@@ -1,0 +1,149 @@
+:root{--bg:#0f1419;--painel:#171f28;--linha:#2a3541;--txt:#e7edf3;--suave:#93a1b0;--cor:#f0a04b;--verde:#6fd39a;--perigo:#f07a7a;--mola:cubic-bezier(.34,1.56,.64,1);--suave-saida:cubic-bezier(.22,1,.36,1);color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.55 system-ui,"Segoe UI",sans-serif}
+main,.topo-dentro{max-width:1080px;margin:0 auto;padding:24px 20px}
+h1{font-size:1.7rem;margin:0 0 6px}
+h2{font-size:1.1rem;margin:0 0 12px}
+.suave,small{color:var(--suave)}
+.destaque{color:var(--cor)}
+button{font:inherit;font-weight:600;cursor:pointer;background:var(--cor);color:#1b1206;border:0;border-radius:6px;padding:9px 16px;transition:transform .15s var(--mola),filter .15s,background-color .2s,border-color .2s,box-shadow .2s}
+button:hover{filter:brightness(1.1)}
+button:active:not(:disabled){transform:scale(.96)}
+button:disabled{opacity:.55;cursor:default}
+button.sec{background:transparent;color:var(--txt);border:1px solid var(--linha)}
+button.sec:hover{border-color:var(--cor)}
+button.link{background:none;color:var(--cor);padding:2px 8px;font-weight:500}
+button.link.perigo{color:var(--perigo)}
+:focus-visible{outline:2px solid var(--cor);outline-offset:2px}
+input,select{font:inherit;width:100%;padding:9px 11px;background:var(--bg);color:var(--txt);border:1px solid var(--linha);border-radius:6px;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{border-color:var(--cor);box-shadow:0 0 0 3px #f0a04b26;outline:none}
+label{display:grid;gap:4px;margin:12px 0;color:var(--suave);font-size:.9rem}
+.painel{background:var(--painel);border:1px solid var(--linha);border-radius:10px;padding:20px}
+
+/* ---------- Topo ---------- */
+.topo{position:sticky;top:0;z-index:10;background:#0f1419cc;backdrop-filter:blur(10px);border-bottom:1px solid var(--linha);animation:desce .5s var(--suave-saida)}
+.topo-dentro{display:flex;align-items:center;gap:16px;padding-top:14px;padding-bottom:14px}
+.topo nav{flex:1;display:flex;gap:4px;flex-wrap:wrap}
+.marca{font-weight:700;font-size:1.1rem;color:var(--txt)}
+.logo{display:inline-block;color:var(--cor);transition:transform .5s var(--mola)}
+.marca:hover .logo{transform:rotate(90deg) scale(1.15)}
+.aba{position:relative;color:var(--txt)}
+.aba::after{content:"";position:absolute;left:8px;right:8px;bottom:-4px;height:2px;border-radius:2px;background:var(--cor);transform:scaleX(0);transition:transform .3s var(--suave-saida)}
+.aba:hover::after,.aba.ativa::after{transform:scaleX(1)}
+.aba.ativa{color:var(--cor)}
+
+/* ---------- Login ---------- */
+/* Card de login no centro exato da tela (horizontal e vertical) */
+.fundo-login{min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:20px}
+/* O fundo animado fica fora do layout, senão ele empurra o card para baixo */
+.orbita{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.orbita span{position:absolute;border-radius:50%;filter:blur(60px);opacity:.35;animation:flutua 14s ease-in-out infinite alternate}
+.orbita span:nth-child(1){width:380px;height:380px;background:#f0a04b;top:-80px;left:-60px}
+.orbita span:nth-child(2){width:320px;height:320px;background:#3b82f6;bottom:-80px;right:-40px;animation-delay:-5s}
+.orbita span:nth-child(3){width:240px;height:240px;background:#6fd39a;top:40%;left:55%;animation-delay:-9s;opacity:.2}
+.login{position:relative;width:100%;max-width:380px;text-align:center;animation:surgeEscala .6s var(--mola);box-shadow:0 20px 60px #0008}
+.login label{text-align:left}
+.login button[type=submit]{width:100%;margin-top:4px}
+.logo.grande{font-size:2.2rem;line-height:1;margin-bottom:8px;animation:gira 6s linear infinite}
+.erro{color:var(--perigo)}
+.treme{animation:treme .4s}
+
+/* ---------- Telas e cartões ---------- */
+.tela{animation:entra .45s var(--suave-saida)}
+.entra{animation:entra .4s var(--suave-saida)}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:16px 0}
+.cartao{display:grid;gap:6px;align-content:start;text-align:left;background:var(--painel);color:var(--txt);border:1px solid var(--linha);border-radius:10px;padding:16px;font-weight:400;
+  animation:entra .45s var(--suave-saida) both;animation-delay:calc(var(--i,0) * 55ms);
+  transition:transform .25s var(--suave-saida),border-color .2s,box-shadow .25s}
+.cartao:hover{border-color:var(--cor);filter:none;transform:translateY(-4px);box-shadow:0 10px 28px #0006,0 0 0 1px #f0a04b33}
+.cartao strong{color:var(--cor)}
+.cartao .preco{font-size:1.15rem;font-weight:700}
+.cartao.sai{animation:sai .32s ease-in forwards}
+/* O ícone ocupa só o próprio tamanho e gira em torno do próprio centro */
+.cartao-home .icone{justify-self:start;display:inline-grid;place-items:center;width:2.6rem;height:2.6rem;font-size:1.8rem;line-height:1;transform-origin:center;transition:transform .4s var(--mola)}
+.cartao-home:hover .icone{transform:scale(1.25) rotate(-8deg)}
+.cartao[disabled]{opacity:.5;cursor:default}
+.esqueleto{min-height:96px;cursor:default}
+.esqueleto span{display:block;height:12px;border-radius:4px;background:linear-gradient(90deg,var(--linha) 25%,#3a4757 50%,var(--linha) 75%);background-size:200% 100%;animation:brilho 1.2s linear infinite}
+.esqueleto span:nth-child(1){width:70%}
+.esqueleto span:nth-child(2){width:90%}
+.esqueleto span:nth-child(3){width:40%}
+.vazio{text-align:center;padding:40px 0}
+
+/* ---------- Assistente de montagem ---------- */
+.montar{display:grid;grid-template-columns:300px 1fr;gap:28px;align-items:start}
+.resumo{position:sticky;top:84px}
+.resumo ol{list-style:none;padding:0;margin:0}
+.resumo li{display:grid;gap:2px;padding:9px 0;border-bottom:1px solid var(--linha);font-size:.92rem;transition:background-color .3s}
+.resumo li.atual .etapa{color:var(--cor)}
+.resumo li.atual .bolinha{border-color:var(--cor);color:var(--cor);animation:pulso 1.6s infinite}
+.resumo li.feito .bolinha{background:var(--verde);border-color:var(--verde);color:#0f1419;animation:estoura .4s var(--mola)}
+.etapa{color:var(--suave);display:flex;align-items:center;gap:8px}
+.bolinha{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--linha);font-size:.7rem;font-weight:700}
+.surge{animation:entraLado .35s var(--suave-saida)}
+.progresso{height:6px;background:var(--linha);border-radius:4px;overflow:hidden;margin:0 0 8px}
+.progresso span{display:block;height:100%;background:linear-gradient(90deg,var(--cor),#ffd08a);border-radius:4px;transition:width .5s var(--suave-saida);box-shadow:0 0 10px var(--cor)}
+.passo{margin:0;color:var(--cor);font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.total{display:flex;justify-content:space-between;margin:12px 0 4px;font-size:1.1rem}
+.numero{font-variant-numeric:tabular-nums}
+.pulsa{animation:pulsoBotao 1.8s infinite}
+.acoes{display:flex;gap:10px;margin:16px 0;flex-wrap:wrap}
+
+/* ---------- Tabelas e avisos ---------- */
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--linha)}
+th{color:var(--suave);font-size:.8rem;text-transform:uppercase;letter-spacing:.06em}
+tbody tr{transition:background-color .2s}
+tbody tr:hover{background:#ffffff08}
+.linhas-animadas tbody tr{animation:entraLado .4s var(--suave-saida) both;animation-delay:calc(var(--i,0) * 45ms)}
+tfoot td{font-weight:700}
+.tag{justify-self:start;font-size:.72rem;color:#1b1206;background:var(--cor);border-radius:4px;padding:1px 6px;margin-left:6px;font-weight:600}
+.cartao .tag{margin-left:0}
+.aviso{padding:10px 14px;border-left:3px solid var(--verde);background:#6fd39a14;margin:12px 0;border-radius:0 6px 6px 0}
+.aviso.entra{animation:entraLado .4s var(--mola)}
+.alerta{border-left-color:var(--cor);background:#f0a04b14}
+.energia{height:8px;background:var(--linha);border-radius:4px;overflow:hidden;margin-top:8px}
+.energia span{display:block;height:100%;width:var(--uso);background:linear-gradient(90deg,var(--verde),var(--cor));animation:enche 1s var(--suave-saida)}
+.alerta .energia span{background:var(--perigo)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chip{border-radius:999px;padding:6px 14px}
+.chip.ativo{box-shadow:0 0 0 3px #f0a04b33}
+
+/* ---------- Pop-up de confirmação ---------- */
+.modal-fundo{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;background:#05080bb3;backdrop-filter:blur(4px);animation:aparece .2s ease-out}
+.modal{width:100%;max-width:400px;text-align:center;box-shadow:0 24px 70px #000a;animation:surgeEscala .35s var(--mola)}
+.modal h2{font-size:1.25rem;margin:8px 0 6px}
+.modal p{margin:0}
+.modal-icone{display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;font-size:1.6rem;background:#f0a04b1f;animation:estoura .45s var(--mola)}
+.modal-icone.perigo{background:#f07a7a1f;box-shadow:0 0 0 0 #f07a7a66;animation:estoura .45s var(--mola),pulsoPerigo 1.8s .45s infinite}
+.modal-acoes{justify-content:center;margin-bottom:0}
+.modal-acoes button{min-width:120px}
+button.botao-perigo{background:var(--perigo);color:#1f0b0b}
+button.carregando.botao-perigo::after{border-color:#1f0b0b;border-right-color:transparent}
+
+/* Botão com "spinner" enquanto espera a API */
+button.carregando{position:relative;color:transparent!important}
+button.carregando::after{content:"";position:absolute;inset:0;margin:auto;width:16px;height:16px;border:2px solid #1b1206;border-right-color:transparent;border-radius:50%;animation:gira .7s linear infinite}
+
+/* ---------- Keyframes ---------- */
+@keyframes entra{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes entraLado{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+@keyframes sai{to{opacity:0;transform:scale(.9) translateY(8px)}}
+@keyframes desce{from{transform:translateY(-100%)}to{transform:none}}
+@keyframes surgeEscala{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:none}}
+@keyframes flutua{to{transform:translate(60px,40px) scale(1.15)}}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes treme{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes brilho{to{background-position:-200% 0}}
+@keyframes pulso{0%{box-shadow:0 0 0 0 #f0a04b88}70%{box-shadow:0 0 0 8px #f0a04b00}100%{box-shadow:0 0 0 0 #f0a04b00}}
+@keyframes pulsoBotao{0%{box-shadow:0 0 0 0 #f0a04baa}70%{box-shadow:0 0 0 12px #f0a04b00}100%{box-shadow:0 0 0 0 #f0a04b00}}
+@keyframes estoura{0%{transform:scale(.4)}100%{transform:scale(1)}}
+@keyframes enche{from{width:0}}
+@keyframes aparece{from{opacity:0}}
+@keyframes pulsoPerigo{0%{box-shadow:0 0 0 0 #f07a7a66}70%{box-shadow:0 0 0 12px #f07a7a00}100%{box-shadow:0 0 0 0 #f07a7a00}}
+
+@media (max-width:800px){.montar{grid-template-columns:1fr}.resumo{position:static}.topo-dentro{flex-wrap:wrap}}
+@media print{body{background:#fff;color:#000}.nao-imprimir,.topo{display:none}.suave{color:#444}th,td{border-color:#999}*{animation:none!important}}
+/* Respeita quem prefere menos movimento (configuração do sistema) */
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}

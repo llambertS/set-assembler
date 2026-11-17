@@ -1,0 +1,25 @@
+# Sobe o PostgreSQL 16 do projeto:  docker compose up -d
+# Porta 5433 no seu PC -> 5432 dentro do container
+# (a 5432 do Windows costuma estar ocupada por um PostgreSQL instalado localmente).
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: setassembler-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: setassembler
+      POSTGRES_USER: setassembler
+      POSTGRES_PASSWORD: setassembler
+      TZ: America/Sao_Paulo
+    ports:
+      - "5433:5432"
+    volumes:
+      - setassembler-dados:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U setassembler -d setassembler"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  setassembler-dados:

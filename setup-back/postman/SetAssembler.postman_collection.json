@@ -1,0 +1,108 @@
+{
+  "info": {
+    "name": "Set-Assembler API",
+    "description": "Rode 'Login' (ou 'Cadastro') primeiro: o token é salvo na variável {{token}} automaticamente.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api" },
+    { "key": "token", "value": "" },
+    { "key": "setupId", "value": "1" }
+  ],
+  "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+  "item": [
+    {
+      "name": "Autenticação",
+      "item": [
+        {
+          "name": "Cadastro",
+          "event": [{ "listen": "test", "script": { "exec": ["pm.collectionVariables.set('token', pm.response.json().token);"] } }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/cadastro",
+            "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Aluno Teste\",\n  \"email\": \"aluno@exemplo.test\",\n  \"senha\": \"123456\"\n}" }
+          }
+        },
+        {
+          "name": "Login (usuário)",
+          "event": [{ "listen": "test", "script": { "exec": ["pm.collectionVariables.set('token', pm.response.json().token);"] } }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"aluno@exemplo.test\",\n  \"senha\": \"123456\"\n}" }
+          }
+        },
+        {
+          "name": "Login (admin)",
+          "event": [{ "listen": "test", "script": { "exec": ["pm.collectionVariables.set('token', pm.response.json().token);"] } }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@setassembler.local\",\n  \"senha\": \"admin123\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Componentes",
+      "item": [
+        { "name": "Listar catálogo", "request": { "method": "GET", "url": "{{baseUrl}}/componentes" } },
+        { "name": "Filtrar (cpu + busca)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/componentes?categoria=cpu&busca=ryzen", "host": ["{{baseUrl}}"], "path": ["componentes"], "query": [{ "key": "categoria", "value": "cpu" }, { "key": "busca", "value": "ryzen" }] } } },
+        { "name": "Ficha de um componente", "request": { "method": "GET", "url": "{{baseUrl}}/componentes/1" } },
+        {
+          "name": "Cadastrar (ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/componentes",
+            "body": { "mode": "raw", "raw": "{\n  \"categoria\": \"fonte\",\n  \"marca\": \"XPG\",\n  \"nome\": \"Fonte 1000 W 80 Plus Gold\",\n  \"info\": \"1000 W\",\n  \"preco\": 999.90,\n  \"watts\": 1000\n}" }
+          }
+        },
+        { "name": "Remover (ADMIN)", "request": { "method": "DELETE", "url": "{{baseUrl}}/componentes/32" } }
+      ]
+    },
+    {
+      "name": "Setups",
+      "item": [
+        {
+          "name": "Salvar setup",
+          "event": [{ "listen": "test", "script": { "exec": ["if (pm.response.code === 201) pm.collectionVariables.set('setupId', pm.response.json().id);"] } }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/setups",
+            "body": { "mode": "raw", "raw": "{\n  \"nome\": \"PC Gamer Custo-Benefício\",\n  \"itens\": [\n    { \"componenteId\": 1 },\n    { \"componenteId\": 7 },\n    { \"componenteId\": 16, \"quantidade\": 2 },\n    { \"componenteId\": 17 },\n    { \"componenteId\": 21 },\n    { \"componenteId\": 26 }\n  ]\n}" }
+          }
+        },
+        {
+          "name": "Salvar setup incompatível (espera 422)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/setups",
+            "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Errado\",\n  \"itens\": [\n    { \"componenteId\": 1 },\n    { \"componenteId\": 9 },\n    { \"componenteId\": 13 },\n    { \"componenteId\": 20 },\n    { \"componenteId\": 21 },\n    { \"componenteId\": 25 }\n  ]\n}" }
+          }
+        },
+        { "name": "Consultar lista", "request": { "method": "GET", "url": "{{baseUrl}}/setups" } },
+        { "name": "Relatório (JSON)", "request": { "method": "GET", "url": "{{baseUrl}}/setups/{{setupId}}" } },
+        {
+          "name": "Alterar setup",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/setups/{{setupId}}",
+            "body": { "mode": "raw", "raw": "{\n  \"nome\": \"PC Gamer Turbinado\",\n  \"itens\": [\n    { \"componenteId\": 1 },\n    { \"componenteId\": 8 },\n    { \"componenteId\": 16, \"quantidade\": 2 },\n    { \"componenteId\": 19 },\n    { \"componenteId\": 21 },\n    { \"componenteId\": 28 },\n    { \"componenteId\": 30 }\n  ]\n}" }
+          }
+        },
+        { "name": "Exportar PDF (Send and Download)", "request": { "method": "GET", "url": "{{baseUrl}}/setups/{{setupId}}/pdf" } },
+        { "name": "Excluir setup", "request": { "method": "DELETE", "url": "{{baseUrl}}/setups/{{setupId}}" } }
+      ]
+    }
+  ]
+}

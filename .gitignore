@@ -1,0 +1,21 @@
+# Dependências e arquivos gerados (cada um recria com "npm install" e o Maven)
+node_modules/
+dist/
+target/
+
+# IDEs e ferramentas locais
+.idea/
+*.iml
+.vscode/
+.claude/
+
+# Logs, segredos e lixo do sistema
+*.log
+.env
+.env.*
+Thumbs.db
+.DS_Store
+
+# Backups e exportações compactadas
+*.zip
+backup*.sql
